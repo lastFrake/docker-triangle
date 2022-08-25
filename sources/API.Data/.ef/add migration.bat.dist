@@ -1,0 +1,8 @@
+@echo off
+cd ../../..
+
+set CONNECTION_STRING=Server=localhost;Database=triangle;User=;Password=
+set /p MIGRATION_NAME="Migration name: "
+
+dotnet ef migrations add %MIGRATION_NAME%  -n "API.Data.Migrations" -o Data/Migrations -p .. -- %CONNECTION_STRING%
+pause

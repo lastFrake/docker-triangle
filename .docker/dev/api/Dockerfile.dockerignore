@@ -1,0 +1,12 @@
+# all folders except a few
+*/
+!sources/API
+!sources/API.BL
+!sources/API.Data
+
+# files
+appsettings.Development.json
+**/Properties
+**/bin
+**/obj
+**/.ef

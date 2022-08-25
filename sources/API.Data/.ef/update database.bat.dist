@@ -1,0 +1,5 @@
+@echo off
+set CONNECTION_STRING=Server=localhost;Database=foobar;User=;Password=
+
+dotnet ef database update -p .. -- %CONNECTION_STRING%
+pause

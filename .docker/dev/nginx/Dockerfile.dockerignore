@@ -1,0 +1,12 @@
+# all folders except a few
+*/
+!sources/UI/
+!.docker/dev/nginx/
+
+# files
+**/.vscode
+**/dist
+**/node_modules
+*.local
+README.md
+Dockerfile*

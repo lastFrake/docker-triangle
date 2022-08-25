@@ -1,0 +1,53 @@
+services:
+    nginx:
+        container_name: nginx-and-ui
+        environment:
+            - NODE_ENV=${ENV}
+        networks:
+            - frontend
+        ports:
+            - ${PORT}:80
+        build:
+            context: ../..
+            dockerfile: .docker/dev/nginx/Dockerfile
+        depends_on:
+            - api
+        restart: unless-stopped
+
+    api:
+        container_name: api
+        environment:
+            - ASPNETCORE_ENVIRONMENT=${ENV}
+            - CONNECTIONSTRINGS__FOXREAD=Server=db;Database=${DB_NAME};User=root;Password=${DB_ROOT_PASSWORD}
+        networks:
+            - frontend
+            - backend
+        build:
+            context: ../..
+            dockerfile: .docker/dev/api/Dockerfile
+        depends_on:
+            db:
+                condition: service_healthy
+        restart: unless-stopped
+
+    db:
+        container_name: db
+        image: mariadb
+        healthcheck:
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "--user=root", "--password=${DB_ROOT_PASSWORD}"]
+            timeout: 10s
+            retries: 12
+        environment:
+            - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+        volumes:
+            - data:/var/lib/mysql
+        networks:
+            - backend
+        restart: unless-stopped
+
+volumes:
+    data:
+    
+networks:
+    frontend:
+    backend:
